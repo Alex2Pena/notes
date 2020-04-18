@@ -1,8 +1,13 @@
 'use strict';
 
+// index.js - Your application’s “entry point”
+// Requires the library files you will be writing (input, notes)
+// Instantiates an “Input” parser
+// Sends properly parsed input to the Notes library for display
 
-const minimist = require('minimist'); // works with command line args
-
+/* eslint-disable */
+const Notes = require('./lib/notes')
+const Input = require('./lib/input')
 options.valid() ? http.fetch(options) : help();
 
 function help() {
@@ -18,52 +23,10 @@ function help() {
 }
 
 // pair programming with Morgan
-class Input {
 
-    constructor() {
-      let args = minimist(process.argv.slice(2));
-      this.command = this.parse(args);
-    }
-    parse(args){
-      let argsTranslate = {
-        a:'add',
-        add:'add'
-      };
-      let firstArg = Object.keys(args).filter(bananna =>{
-        argsTranslate[bananna]
-      })[0];
-
-      return {
-        action: argsTranslate[firstArg],
-        payload: args[firstArg]
-      };
-
-      valid(){
-        return !!(this.command.action && this.command.payload);
-      }
-    };
 
     const input = new Input();
     const note = new Note(input)
     input.valid() ? note.execute() : help();
 
-    class Note {
-
-      constructor(options){
-        this.action = options.command.action;
-        this.payload = options.command.payload;
-      }
-    }
-
-
-
-  // -b is the body.
-  getPayload(body = undefined) {
-
-    try {
-      return JSON.parse(body);
-    }
-    catch (e) {
-      return body;
-    }
-  }
+    
