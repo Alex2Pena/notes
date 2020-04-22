@@ -1,14 +1,20 @@
 'use strict';
 
-// index.js - Your application’s “entry point”
-// Requires the library files you will be writing (input, notes)
-// Instantiates an “Input” parser
-// Sends properly parsed input to the Notes library for display
+const mongoose = require('mongoose'); // meant to connect us to mongodb - do CRUD
+const Input = require('./lib/input');
+const Note = require('./lib/notes');
 
-/* eslint-disable */
-const Notes = require('./lib/notes')
-const Input = require('./lib/input')
-options.valid() ? http.fetch(options) : help();
+
+const MONGODB_URI = 'mongodb://localhost:27017/notes-db'; // location of your db
+// const Food = require('./models/notes-schema.js'); // pulls in our Food model for instantiation of food items later on
+
+
+mongoose.connect(MONGODB_URI, { userNewUrlParser: true, useUnifiedTopology: true });
+
+const input = new Input();
+const note = new Note(input);
+input.valid() ? note.execute() : help();
+
 
 function help() {
   console.log(`
@@ -22,11 +28,4 @@ function help() {
   process.exit();
 }
 
-// pair programming with Morgan
-
-
-    const input = new Input();
-    const note = new Note(input)
-    input.valid() ? note.execute() : help();
-
-    
+mongoose.disconnect();
