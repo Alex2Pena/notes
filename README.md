@@ -1,1 +1,1 @@
-# notes
+# notes CLI app

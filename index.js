@@ -15,6 +15,7 @@ const input = new Input();
 const note = new Note(input);
 input.valid() ? note.execute() : help();
 
+
 function help() {
   console.log(`
   api USAGE: api -m <method> -u <url> -b '<body>'
