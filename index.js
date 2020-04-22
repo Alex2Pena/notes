@@ -1,9 +1,19 @@
 'use strict';
 
+const mongoose = require('mongoose'); // meant to connect us to mongodb - do CRUD
+const Input = require('./lib/input');
+const Note = require('./lib/notes');
 
-const minimist = require('minimist'); // works with command line args
 
-options.valid() ? http.fetch(options) : help();
+const MONGODB_URI = 'mongodb://localhost:27017/notes-db'; // location of your db
+// const Food = require('./models/notes-schema.js'); // pulls in our Food model for instantiation of food items later on
+
+
+mongoose.connect(MONGODB_URI, { userNewUrlParser: true, useUnifiedTopology: true });
+
+const input = new Input();
+const note = new Note(input);
+input.valid() ? note.execute() : help();
 
 function help() {
   console.log(`
@@ -17,53 +27,4 @@ function help() {
   process.exit();
 }
 
-// pair programming with Morgan
-class Input {
-
-    constructor() {
-      let args = minimist(process.argv.slice(2));
-      this.command = this.parse(args);
-    }
-    parse(args){
-      let argsTranslate = {
-        a:'add',
-        add:'add'
-      };
-      let firstArg = Object.keys(args).filter(bananna =>{
-        argsTranslate[bananna]
-      })[0];
-
-      return {
-        action: argsTranslate[firstArg],
-        payload: args[firstArg]
-      };
-
-      valid(){
-        return !!(this.command.action && this.command.payload);
-      }
-    };
-
-    const input = new Input();
-    const note = new Note(input)
-    input.valid() ? note.execute() : help();
-
-    class Note {
-
-      constructor(options){
-        this.action = options.command.action;
-        this.payload = options.command.payload;
-      }
-    }
-
-
-
-  // -b is the body.
-  getPayload(body = undefined) {
-
-    try {
-      return JSON.parse(body);
-    }
-    catch (e) {
-      return body;
-    }
-  }
+mongoose.disconnect();
